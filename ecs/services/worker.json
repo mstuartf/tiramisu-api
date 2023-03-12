@@ -1,5 +1,5 @@
 {
-    "cluster": "td-api",
+    "cluster": "tiramisu-api",
     "deploymentConfiguration": {
         "deploymentCircuitBreaker": {
             "enable": false,
@@ -30,7 +30,7 @@
     "placementStrategy": [],
     "platformVersion": "LATEST",
     "schedulingStrategy": "REPLICA",
-    "serviceName": "td-api-worker",
+    "serviceName": "tiramisu-api-worker",
     "tags": [],
-    "taskDefinition": "arn:aws:ecs:eu-west-2:112991276079:task-definition/td-api-worker:3"
+    "taskDefinition": "arn:aws:ecs:eu-west-2:112991276079:task-definition/tiramisu-api-worker:2"
 }

@@ -7,5 +7,5 @@
 * `. ecs/deploy.sh $NEW_VERSION`
 
 #### Debugging:
-* `aws ecs execute-command --cluster td-api --container web --task TASK_ID --interactive --command "/bin/bash"`
+* `aws ecs execute-command --cluster tiramisu-api --container web --task TASK_ID --interactive --command "/bin/bash"`
 * `wscat -c ws://localhost:8001/ws/events/ -x '{"event": $EXAMPLE DATA}'`
