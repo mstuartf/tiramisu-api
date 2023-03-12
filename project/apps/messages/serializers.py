@@ -38,6 +38,7 @@ class WriteMessageSerializer(serializers.ModelSerializer):
         fields = (
             "raw",
             "parsed",
+            "copied"
         )
 
 

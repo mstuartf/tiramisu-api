@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import MessageSet
+from .models import MessageSet, Message
 
 
 @admin.register(MessageSet)
@@ -24,3 +24,14 @@ class MessageSetAdmin(admin.ModelAdmin):
 
     def nb_messages(self, obj):
         return obj.messages.count()
+
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    model = Message
+
+    list_display = (
+        "id",
+        "parsed",
+        "copied",
+    )

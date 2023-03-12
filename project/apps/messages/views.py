@@ -12,7 +12,10 @@ from ..prospects.models import Prospect
 from .serializers import (
     WriteMessageSetSerializer,
     ReadMessageSetSerializer,
+    WriteMessageSerializer,
 )
+
+from .models import Message
 
 logger = logging.getLogger(__name__)
 
@@ -61,3 +64,13 @@ class MessageSetView(
         return Response(
             read_serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )
+
+
+class MessageView(
+    mixins.UpdateModelMixin,
+    GenericViewSet,
+):
+    serializer_class = WriteMessageSerializer
+
+    def get_queryset(self):
+        return Message.objects.filter(set__user=self.request.user)
