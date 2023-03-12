@@ -1,3 +1,4 @@
+import re
 import logging
 
 from rest_framework import mixins, status
@@ -38,7 +39,17 @@ class MessageSetView(
         full_prompt = build_prompt(prompt, prospect)
         logger.info(full_prompt)
         completion = draft_messages(build_prompt(prompt, prospect))
-        messages = [{"parsed": raw} for raw in completion["choices"][0]["text"].split("\n") if len(raw) > 3]
+        raw_messages = completion["choices"][0]["text"].split("\n")
+        messages = []
+        for msg in raw_messages:
+            match = re.match('(\d\.)(.+)', msg)
+            if not match:
+                continue
+
+            messages.append({
+                "parsed": match.groups()[1].strip(),
+            })
+
         data = {
             "user": request.user.id,
             "prospect": prospect.id,
