@@ -82,6 +82,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "apps.accounts",
     "apps.companies",
+    "apps.prompts",
 ]
 
 REST_FRAMEWORK = {
