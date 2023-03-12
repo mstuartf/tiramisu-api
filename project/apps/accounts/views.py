@@ -1,7 +1,12 @@
 from django.shortcuts import render, redirect
+from rest_framework import mixins
+from rest_framework.viewsets import GenericViewSet
+
 from .forms import CustomUserCreationForm
+from .serializers import ReadUserSerializer
 from ..companies.forms import CompanyForm
 from ..companies.models import Company
+from .models import CustomUser
 
 
 def signup_success_view(request):
@@ -29,3 +34,24 @@ def join_account_view(request, company_id=None):
         user.save()
         return redirect('accounts:signup_success')
     return render(request, 'signup.html', {'user_form': user_form})
+
+
+class UserView(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    GenericViewSet,
+):
+
+    serializer_class = ReadUserSerializer
+
+    def get_queryset(self):
+        return CustomUser.objects.all(
+            company=self.request.user.company
+        )
+
+    def get_object(self):
+        pk = self.kwargs['pk']
+        if pk == 'me':
+            return self.request.user
+        else:
+            return super().get_object()

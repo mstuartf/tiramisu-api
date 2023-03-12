@@ -51,3 +51,4 @@ class CustomUser(AbstractUser):
     objects = UserManager()
 
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
+    admin = models.BooleanField(default=False)
