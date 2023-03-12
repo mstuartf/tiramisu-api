@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm
 from ..companies.forms import CompanyForm
+from ..companies.models import Company
 
 
 def home_view(request):
@@ -17,3 +18,14 @@ def signup_view(request):
         user.save()
         return redirect('accounts:home')
     return render(request, 'signup.html', {'user_form': user_form, 'company_form': company_form})
+
+
+def join_account_view(request, company_id=None):
+    user_form = CustomUserCreationForm(request.POST)
+    company = Company.objects.get(pk=company_id)
+    if user_form.is_valid():
+        user = user_form.save()
+        user.company = company
+        user.save()
+        return redirect('accounts:home')
+    return render(request, 'signup.html', {'user_form': user_form})
