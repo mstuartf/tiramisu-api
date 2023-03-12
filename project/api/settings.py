@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "apps.accounts",
+    "apps.companies",
 ]
 
 REST_FRAMEWORK = {
@@ -119,7 +120,6 @@ LOGOUT_REDIRECT_URL = "/accounts/login/"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

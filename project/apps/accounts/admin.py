@@ -9,8 +9,11 @@ class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
-    list_display = ["id", "email", ]
+    list_display = ["id", "email", "company__name"]
     ordering = ('email',)
+
+    def company__name(self, obj):
+        return obj.company.name if obj.company else None
 
 
 admin.site.register(CustomUser, CustomUserAdmin)

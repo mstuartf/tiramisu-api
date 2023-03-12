@@ -3,6 +3,7 @@ import uuid
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from ..companies.models import Company
 
 
 class UserManager(BaseUserManager):
@@ -48,3 +49,5 @@ class CustomUser(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
 
     objects = UserManager()
+
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
