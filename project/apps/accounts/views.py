@@ -4,8 +4,8 @@ from ..companies.forms import CompanyForm
 from ..companies.models import Company
 
 
-def home_view(request):
-    return render(request, 'home.html')
+def signup_success_view(request):
+    return render(request, 'signup_success.html')
 
 
 def signup_view(request):
@@ -16,7 +16,7 @@ def signup_view(request):
         user = user_form.save()
         user.company = company
         user.save()
-        return redirect('accounts:home')
+        return redirect('accounts:signup_success')
     return render(request, 'signup.html', {'user_form': user_form, 'company_form': company_form})
 
 
@@ -27,5 +27,5 @@ def join_account_view(request, company_id=None):
         user = user_form.save()
         user.company = company
         user.save()
-        return redirect('accounts:home')
+        return redirect('accounts:signup_success')
     return render(request, 'signup.html', {'user_form': user_form})
