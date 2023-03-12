@@ -84,6 +84,7 @@ INSTALLED_APPS = [
     "apps.companies",
     "apps.prompts",
     "apps.prospects",
+    "apps.messages",
 ]
 
 REST_FRAMEWORK = {
