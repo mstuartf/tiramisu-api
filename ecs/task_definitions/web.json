@@ -47,7 +47,7 @@
             "healthCheck": {
                 "command": [
                     "CMD-SHELL",
-                    "curl -f http://127...1/health-check || exit 1"
+                    "curl -f http://127.0.0.1/health-check || exit 1"
                 ],
                 "interval": 5,
                 "retries": 3,
