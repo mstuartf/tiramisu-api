@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "apps.accounts",
 ]
 
 REST_FRAMEWORK = {
@@ -91,7 +92,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-# AUTH_USER_MODEL = ""
+AUTH_USER_MODEL = "accounts.CustomUser"
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
