@@ -28,11 +28,6 @@ class MessageSetView(
 
     serializer_class = ReadMessageSetSerializer
 
-    # {
-    #     "prompt": "bcd5dbd1-2916-4529-80ea-e4f054fab718",
-    #     "prospect": "7c43b77c-6dad-471f-b276-e5d3a27861f0"
-    # }
-
     def create(self, request, *args, **kwargs):
         logger.info("generating messages for prompt {} to prospect {}".format(
             request.data["prompt"],
@@ -40,20 +35,16 @@ class MessageSetView(
         ))
         prompt = Prompt.objects.get(pk=request.data["prompt"])
         prospect = Prospect.objects.get(pk=request.data["prospect"])
-        messages = draft_messages(build_prompt(prompt, prospect))
-        choices = messages.pop("choices")
-        logger.info(messages)
+        full_prompt = build_prompt(prompt, prospect)
+        logger.info(full_prompt)
+        completion = draft_messages(build_prompt(prompt, prospect))
+        messages = [{"parsed": raw} for raw in completion["choices"][0]["text"].split("\n") if len(raw) > 3]
         data = {
             "user": request.user.id,
             "prospect": prospect.id,
             "prompt": prompt.id,
-            "raw": messages,
-            "messages": [
-                {
-                    "raw": raw,
-                    "parsed": raw["text"]
-                } for raw in choices
-            ]
+            "raw": completion,
+            "messages": messages,
         }
         serializer = WriteMessageSetSerializer(data=data)
         serializer.is_valid(raise_exception=True)

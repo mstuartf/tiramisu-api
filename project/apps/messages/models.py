@@ -14,6 +14,5 @@ class MessageSet(RootModel):
 
 class Message(RootModel):
     set = models.ForeignKey(MessageSet, on_delete=models.CASCADE, related_name="messages")
-    raw = models.JSONField()
     parsed = models.TextField()
     copied = models.BooleanField(default=False)

@@ -36,7 +36,6 @@ class WriteMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = (
-            "raw",
             "parsed",
             "copied"
         )
