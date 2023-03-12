@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import sys
+from datetime import timedelta
 
 from kombu.utils.url import safequote
 from django.utils.log import DEFAULT_LOGGING
@@ -94,6 +95,10 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.BasicAuthentication",
     ),
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60*24),
 }
 
 AUTH_USER_MODEL = "accounts.CustomUser"
