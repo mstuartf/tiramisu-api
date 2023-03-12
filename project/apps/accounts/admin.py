@@ -9,7 +9,7 @@ class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
-    list_display = ["id", "email", "company__name"]
+    list_display = ["id", "email", "company__name", "admin"]
     ordering = ('email',)
 
     def company__name(self, obj):

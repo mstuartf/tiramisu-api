@@ -20,6 +20,7 @@ def signup_view(request):
         company = company_form.save()
         user = user_form.save()
         user.company = company
+        user.admin = True
         user.save()
         return redirect('accounts:signup_success')
     return render(request, 'signup.html', {'user_form': user_form, 'company_form': company_form})
@@ -45,7 +46,7 @@ class UserView(
     serializer_class = ReadUserSerializer
 
     def get_queryset(self):
-        return CustomUser.objects.all(
+        return CustomUser.objects.filter(
             company=self.request.user.company
         )
 

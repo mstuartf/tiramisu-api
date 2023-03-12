@@ -11,4 +11,5 @@ class ReadUserSerializer(serializers.ModelSerializer):
             "id",
             "email",
             "admin",
+            "company",
         )

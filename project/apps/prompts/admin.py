@@ -10,6 +10,7 @@ class PromptAdmin(admin.ModelAdmin):
         "id",
         "user__email",
         "name",
+        "text",
     )
 
     def user__email(self, obj):
