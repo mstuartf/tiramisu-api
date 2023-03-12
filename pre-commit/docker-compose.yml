@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  pre-commit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [ "pre-commit", "run" ]
+    volumes:
+      - ../:/pre-commit/

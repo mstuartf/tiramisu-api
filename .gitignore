@@ -1,0 +1,6 @@
+.python-version
+.idea
+*.pyc
+db.sqlite3
+local/.env
+env

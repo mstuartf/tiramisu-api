@@ -1,0 +1,97 @@
+version: "3"
+
+# Notes:
+# - We use docker-compose for local development only. We use ECS on remote envs.
+# - Use command scripts to ensure consistency with Task Definitions.
+# - Make sure you create local/.env based on local/template.env.
+# - To enter one of the running containers, run `$ docker exec -it $CONTAINER_ID bash`.
+
+# Anchors:
+# https://docs.docker.com/compose/compose-file/compose-file-v2/#extension-fields
+
+# This is the path of the local file containing the required environment variables. This file is not in the repo.
+# You will need to create a local copy based on template.env.
+x-variables:
+  - &local-env-file local/.env
+
+# This config is shared by all of the Django instances (web and worker services and one-off migration task).
+x-app-base-svc: &app-base-svc
+  build: ./project
+  env_file:
+    - *local-env-file
+  volumes:
+    # Use volumes to ensure local file changes are reflected in the container while developing.
+    - ./project:/app/
+    - static_volume:/app/static
+  # Don't let these services (web, worker and migration task) start until...
+  depends_on:
+    # ...the db is running
+    - postgres_svc
+    # ...the local SQS instance is ready
+    - localstack
+
+services:
+
+  web_svc:
+    <<: *app-base-svc
+    expose:
+      - 8000  # expose port 8000 internally to other Docker services but not to host machine
+    command: ["./commands/web.sh", "--reload"]
+
+  # reverse proxy for gunicorn to handle client requests and serve static files
+  nginx:
+    image: nginx:1.13
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - static_volume:/app/static
+    ports:
+      - 1337:80
+    depends_on:
+      - web_svc
+
+  worker_svc:
+    <<: *app-base-svc
+    command: ["./commands/worker.sh"]
+
+  # This container will just run the migrations then terminate.
+  # It simulates the one-off ECS task for migrations triggered on deploy.
+  migrate_task:
+    <<: *app-base-svc
+    command: ["./commands/migrate.sh"]
+
+  # This container replaces RDS when running locally
+  postgres_svc:
+    image: postgres:12.5-alpine
+    env_file:
+      - *local-env-file
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+    logging:
+      driver: none
+
+  # We don't want to connect to a live SQS queue when running locally. Instead we use
+  # localstack to create a mock SQS instance locally.
+  localstack:
+    image: localstack/localstack:0.12.11
+    ports:
+      # expose ports so we can access using the CLI: $ aws --endpoint-url=http://localhost:4566 ...etc
+      - '4566-4583:4566-4583'
+    environment:
+      SERVICES: sqs,s3
+      DEBUG: 1
+      # required to allow Celery to access sqs://@localstack:4566
+      HOSTNAME_EXTERNAL: localstack
+    # Note: it's possible to use mounts to persist store state when containers are shut down by setting
+    # the DATA_DIR env variable and using volumes. But this causes the localstack service to take a
+    # very long time to startup (repeatedly shows "Waiting for all LocalStack services to be ready").
+    logging:
+      driver: none
+    volumes:
+      # When a container is started for the first time, it will execute files with extensions .sh that are found
+      # in /docker-entrypoint-initaws.d. Use this to create buckets.
+      - ./local/localstack:/docker-entrypoint-initaws.d
+
+volumes:
+  database-data:
+  static_volume:
+  sqs:

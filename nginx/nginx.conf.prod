@@ -1,0 +1,24 @@
+# We can't use the 'web' container's name here (following these instructions https://aws.amazon.com/blogs/compute/nginx-reverse-proxy-sidecar-container-on-amazon-ecs/)
+# because links are not supported when the network type is 'awsvpc'. But awsvpc does allow you to reference other
+# containers just by using localhost (https://stackoverflow.com/questions/54772120/docker-links-with-awsvpc-network-mode).
+
+upstream app {
+    server localhost:8000;
+}
+
+server {
+
+    listen 80;
+    server_name _;
+
+    location / {
+        proxy_read_timeout 300s;
+        proxy_connect_timeout 75s;
+        proxy_pass http://app;
+    }
+
+    location /static/ {
+        alias /app/static/;
+    }
+
+}

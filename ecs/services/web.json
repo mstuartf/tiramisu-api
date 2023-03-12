@@ -1,0 +1,41 @@
+{
+    "cluster": "td-api",
+    "deploymentConfiguration": {
+        "deploymentCircuitBreaker": {
+            "enable": false,
+            "rollback": false
+        },
+        "maximumPercent": 200,
+        "minimumHealthyPercent": 100
+    },
+    "desiredCount": 1,
+    "enableECSManagedTags": true,
+    "enableExecuteCommand": true,
+    "launchType": "FARGATE",
+    "loadBalancers": [
+        {
+            "containerName": "nginx",
+            "containerPort": 80,
+            "targetGroupArn": "arn:aws:elasticloadbalancing:eu-west-2:112991276079:targetgroup/seasmoke-tg/22b802b11e9e427f"
+        }
+    ],
+    "networkConfiguration": {
+        "awsvpcConfiguration": {
+            "assignPublicIp": "ENABLED",
+            "securityGroups": [
+                "sg-0f3fd09a5e7aa66ea"
+            ],
+            "subnets": [
+                "subnet-0e229b2922ab21cce",
+                "subnet-0997a5d7f4b3172dd",
+                "subnet-0e6a9f1c3a4c52c42"
+            ]
+        }
+    },
+    "placementConstraints": [],
+    "placementStrategy": [],
+    "platformVersion": "LATEST",
+    "schedulingStrategy": "REPLICA",
+    "serviceName": "td-api-web-2",
+    "taskDefinition": "arn:aws:ecs:eu-west-2:112991276079:task-definition/td-api-web:18"
+}
