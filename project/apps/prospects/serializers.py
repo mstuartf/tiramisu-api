@@ -9,9 +9,9 @@ class ReadProspectSerializer(serializers.ModelSerializer):
         model = Prospect
         fields = (
             "id",
-            "first_name",
-            "last_name",
+            "full_name",
             "headline",
+            "talks_about",
             "summary",
             "slug",
         )
@@ -23,10 +23,9 @@ class WriteProspectSerializer(serializers.ModelSerializer):
         model = Prospect
         fields = (
             "slug",
-            "first_name",
-            "last_name",
+            "full_name",
             "headline",
+            "talks_about",
             "summary",
-            "raw",
             "user",
         )

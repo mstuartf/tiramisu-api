@@ -17,6 +17,7 @@ from .serializers import (
 )
 
 from .models import Message
+from ..prospects.serializers import WriteProspectSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -30,12 +31,25 @@ class MessageSetView(
     serializer_class = ReadMessageSetSerializer
 
     def create(self, request, *args, **kwargs):
+        prompt_id = request.data["prompt_id"]
+        prospect_data = request.data["profile"]
         logger.info("generating messages for prompt {} to prospect {}".format(
-            request.data["prompt"],
-            request.data["prospect"],
+            prompt_id,
+            prospect_data["slug"],
         ))
-        prompt = Prompt.objects.get(pk=request.data["prompt"])
-        prospect = Prospect.objects.get(pk=request.data["prospect"])
+        prompt = Prompt.objects.get(pk=prompt_id)
+        try:
+            prospect = Prospect.objects.get(slug=prospect_data["slug"])
+        except Prospect.DoesNotExist:
+            logger.info("no profile in db with this slug, creating")
+            data = {
+                "user": request.user.id,
+                **prospect_data,
+            }
+            serializer = WriteProspectSerializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            prospect = serializer.save()
+
         full_prompt = build_prompt(prompt, prospect)
         logger.info(full_prompt)
         completion = draft_messages(build_prompt(prompt, prospect))
