@@ -11,8 +11,15 @@ class MessageSetAdmin(admin.ModelAdmin):
         "prospect__slug",
         "prompt__name",
         "user__email",
+        "user__company__name",
         "nb_messages",
     )
+
+    list_filter = (
+        'user__company__name',
+        'user__email',
+    )
+
     def prospect__slug(self, obj):
         return obj.prospect.slug
 
@@ -21,6 +28,9 @@ class MessageSetAdmin(admin.ModelAdmin):
 
     def user__email(self, obj):
         return obj.user.email
+
+    def user__company__name(self, obj):
+        return obj.user.company.name if obj.user.company else None
 
     def nb_messages(self, obj):
         return obj.messages.count()
@@ -32,6 +42,13 @@ class MessageAdmin(admin.ModelAdmin):
 
     list_display = (
         "id",
+        "set__prospect__slug",
+        "set__user__email",
         "parsed",
         "copied",
     )
+    def set__prospect__slug(self, obj):
+        return obj.set.prospect.slug
+
+    def set__user__email(self, obj):
+        return obj.set.user.email
