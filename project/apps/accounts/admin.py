@@ -12,6 +12,11 @@ class CustomUserAdmin(UserAdmin):
     list_display = ["id", "email", "company__name", "admin"]
     ordering = ('email',)
 
+    fieldsets = (
+        (None, {"fields": ("email", "password", "company")}),
+        ("Permissions", {"fields": ("is_staff", "is_active",)}),
+    )
+
     def company__name(self, obj):
         return obj.company.name if obj.company else None
 
