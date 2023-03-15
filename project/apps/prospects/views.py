@@ -8,18 +8,19 @@ from .proxycurl import fetch_profile_request
 
 from .serializers import (
     WriteProspectSerializer,
-    ReadProspectSerializer,
+    ReadProspectSerializerOld,
 )
 
 logger = logging.getLogger(__name__)
 
 
+# todo: REMOVE_V1
 class ProspectView(
     mixins.CreateModelMixin,
     GenericViewSet,
 ):
 
-    serializer_class = ReadProspectSerializer
+    serializer_class = ReadProspectSerializerOld
 
     def create(self, request, *args, **kwargs):
         slug = request.data["slug"]
@@ -32,17 +33,15 @@ class ProspectView(
             data = {
                 "slug": slug,
                 "user": request.user.id,
-                "first_name": raw.get("first_name"),
-                "last_name": raw.get("last_name"),
+                "full_name": raw.get("full_name"),
                 "headline": raw.get("headline"),
                 "summary": raw.get("summary"),
-                "raw": raw,
             }
             serializer = WriteProspectSerializer(data=data)
             serializer.is_valid(raise_exception=True)
             obj = serializer.save()
 
-        read_serializer = ReadProspectSerializer(obj)
+        read_serializer = ReadProspectSerializerOld(obj)
         headers = self.get_success_headers(read_serializer.data)
         return Response(
             read_serializer.data, status=status.HTTP_201_CREATED, headers=headers

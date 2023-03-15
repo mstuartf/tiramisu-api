@@ -9,8 +9,7 @@ class ProspectAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "slug",
-        "first_name",
-        "last_name",
+        "full_name",
         "user__email",
     )
 

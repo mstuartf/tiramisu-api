@@ -1,3 +1,5 @@
+# todo: REMOVE_V1
+
 import os
 import logging
 import requests
