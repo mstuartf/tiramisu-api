@@ -71,15 +71,27 @@ class MessageSetView(
 
         full_prompt = build_prompt(prompt, prospect)
         completion = draft_messages(full_prompt)
+        # completion = {
+        #     "choices": [
+        #         {
+        #             "text": ":\n\n1. \"Looks like you're the go-to guy for start-ups needing help with sales and lead gen!\"\n2. You must be a pro at email marketing - I'm sure you know all the tricks of the trade!\n3.\"Account management is a tricky business - glad you've got it covered!\"\n\"Contact centers don't stand a chance against you and your business development expertise!\"\nYou must be in high demand with all the skills you've got!"
+        #         }
+        #     ],
+        # }
+
         raw_messages = completion["choices"][0]["text"].split("\n")
         messages = []
         for msg in raw_messages:
-            match = re.match('(\d\.)(.+)', msg)
+            match = re.match(r'(\d\.)?( *")?([^"]+)"?', msg)
             if not match:
                 continue
 
+            parsed = match.groups()[2].strip()
+            if len(parsed) < 2:
+                continue
+            logger.info(parsed)
             messages.append({
-                "parsed": match.groups()[1].strip(),
+                "parsed": parsed,
             })
 
         data = {
