@@ -82,7 +82,7 @@ class MessageSetView(
         raw_messages = completion["choices"][0]["text"].split("\n")
         messages = []
         for msg in raw_messages:
-            match = re.match(r'(\d\.)?( *")?([^"]+)"?', msg)
+            match = re.match(r'(\d\.)( *")?([^"]+)"?', msg)
             if not match:
                 continue
 

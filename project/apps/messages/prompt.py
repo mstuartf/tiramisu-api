@@ -6,10 +6,12 @@ master = """\n
 Their summary is:
 {summary}
 
-Write up to 5 ice breakers (in English) to start a conversation with {full_name} that make a reference to information on their profile.
+Write 5 ice breakers (in English) to start a conversation with {full_name} that make a reference to information on their profile.
 
 The ice breakers should be in the following style:
 {style}\
+
+They should be numbered from 1 to 5.
 """
 
 
