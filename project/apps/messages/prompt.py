@@ -6,12 +6,12 @@ master = """\n
 Their summary is:
 {summary}
 
-Write 5 ice breakers (in English) to start a conversation with {full_name} that make a reference to information on their profile.
+Write 5 messages (numbered 1-5) that I could send to start a conversation with {full_name} that make a reference to \
+information on their profile.
 
-The ice breakers should be in the following style:
-{style}\
-
-They should be numbered from 1 to 5.
+The messages should follow these rules:
+* No line breaks
+{rules}\
 """
 
 
@@ -20,5 +20,5 @@ def build_prompt(prompt, prospect):
         full_name=prospect.full_name,
         headline=prospect.headline,
         summary=prospect.summary,
-        style=prompt.text
+        rules=prompt.text
     )
