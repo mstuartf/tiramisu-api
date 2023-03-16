@@ -11,6 +11,7 @@ class PromptAdmin(admin.ModelAdmin):
         "user__email",
         "name",
         "text",
+        "deprecated",
     )
 
     def user__email(self, obj):

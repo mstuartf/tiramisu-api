@@ -25,7 +25,7 @@ class PromptView(
     serializer_class = ReadPromptSerializer
 
     def get_queryset(self):
-        return Prompt.objects.filter(Q(user=None) | Q(user=self.request.user))
+        return Prompt.objects.filter(Q(user=None) | Q(user=self.request.user), deprecated=False)
 
     def create(self, request, *args, **kwargs):
         data = {
