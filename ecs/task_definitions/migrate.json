@@ -44,7 +44,7 @@
                 }
             ],
             "essential": true,
-            "image": "112991276079.dkr.ecr.eu-west-2.amazonaws.com/tiramisu-api:2.0.4",
+            "image": "112991276079.dkr.ecr.eu-west-2.amazonaws.com/tiramisu-api:2.0.5",
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
