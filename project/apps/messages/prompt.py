@@ -24,25 +24,34 @@ def build_prompt(prompt, prospect):
 
 
 v3 = """\n
-{full_name}'s LinkedIn headline is: {headline}.
+Draft 3 messages to {full_name}
+Their LinkedIn headline is: {headline}
 Their summary is: {summary}
 
-I need to send a sales message to {full_name} on LinkedIn.
-The message should:
-* Have no line breaks
+The messages should:
 * Start 'Hi [first name]', and end 'Kind regards'
 * Have a {style} style 
 
-{sections}
+{sections}"""
 
-Here are 3 possible messages (numbered):"""
-
-
-def build_prompt_v3(template, prospect):
-    return v3.format(
-        full_name=prospect.full_name,
-        headline=prospect.headline,
-        summary=prospect.summary or "",
-        style=template.parse_style(),
-        sections=template.parse_sections(),
-    )
+def build_chat_messages(template, prospect):
+    return [
+        {
+            "role": "system",
+            "content": "You are a helpful assistant that drafts LinkedIn messages for salespeople."
+        },
+        {
+            "role": "system",
+            "content": "You only speak JSON. Do not print normal text. Print an array only. For each message, add an object to the array with the key 'message'."
+        },
+        {
+            "role": "user",
+            "content": v3.format(
+                full_name=prospect.full_name,
+                headline=prospect.headline,
+                summary=prospect.summary or "",
+                style=template.parse_style(),
+                sections=template.parse_sections(),
+            )
+        }
+    ]

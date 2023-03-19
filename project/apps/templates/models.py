@@ -34,7 +34,7 @@ class Template(RootModel):
             return ""
         return "\n".join(
             [
-                "The message should have the following sections (1-2 sentences each):"
+                "The message should have the following paragraphs (1-2 sentences each):"
             ] +
             [
                 '{}. {}'.format(

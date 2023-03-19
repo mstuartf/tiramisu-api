@@ -42,9 +42,13 @@ class MessageAdmin(admin.ModelAdmin):
         "set__user__email",
         "parsed",
         "copied",
+        "set__id",
     )
     def set__prospect__slug(self, obj):
         return obj.set.prospect.slug
 
     def set__user__email(self, obj):
         return obj.set.user.email
+
+    def set__id(self, obj):
+        return obj.set.id
