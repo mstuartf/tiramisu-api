@@ -5,9 +5,10 @@ from rest_framework import mixins, status
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from .chat import draft_messages
-from .prompt import build_prompt
+from .prompt import build_prompt, build_prompt_v3
 
 from ..prompts.models import Prompt
+from ..templates.models import Template
 from ..prospects.models import Prospect
 
 from .serializers import (
@@ -55,6 +56,28 @@ def get_instances_v2(request):
     return prospect, prompt
 
 
+def get_instances_v3(request):
+    template_id = request.data["template_id"]
+    prospect_data = request.data["profile"]
+    logger.info("generating messages for templaet {} to prospect {}".format(
+        template_id,
+        prospect_data["slug"],
+    ))
+    template = Template.objects.get(pk=template_id)
+    try:
+        prospect = Prospect.objects.get(slug=prospect_data["slug"])
+    except Prospect.DoesNotExist:
+        logger.info("no profile in db with this slug, creating")
+        data = {
+            "user": request.user.id,
+            **prospect_data,
+        }
+        serializer = WriteProspectSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        prospect = serializer.save()
+    return prospect, template
+
+
 class MessageSetView(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
@@ -64,12 +87,23 @@ class MessageSetView(
     serializer_class = ReadMessageSetSerializer
 
     def create(self, request, *args, **kwargs):
-        if request.data.get("profile"):
-            prospect, prompt = get_instances_v2(request)
-        else:
+        # prompt,prospect
+        if request.data.get("prospect"):
             prospect, prompt = get_instances_v1(request)
+            full_prompt = build_prompt(prompt, prospect)
+            args = {"prompt": prompt.id}
+        # prompt_id, profile
+        elif request.data.get("prompt_id"):
+            prospect, prompt = get_instances_v2(request)
+            full_prompt = build_prompt(prompt, prospect)
+            args = {"prompt": prompt.id}
+        # template_id, profile
+        else:
+            prospect, template = get_instances_v3(request)
+            full_prompt = build_prompt_v3(template, prospect)
+            args = {"template": template.id}
+            logger.info(full_prompt)
 
-        full_prompt = build_prompt(prompt, prospect)
         completion = draft_messages(full_prompt)
         # completion = {
         #     "choices": [
@@ -97,9 +131,9 @@ class MessageSetView(
         data = {
             "user": request.user.id,
             "prospect": prospect.id,
-            "prompt": prompt.id,
             "raw": completion,
             "messages": messages,
+            **args,
         }
         serializer = WriteMessageSetSerializer(data=data)
         serializer.is_valid(raise_exception=True)

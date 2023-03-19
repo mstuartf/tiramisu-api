@@ -1,5 +1,4 @@
-
-master = """\n
+v1 = """\n
 "{full_name}'s LinkedIn headline is:
 {headline}.
    
@@ -16,9 +15,34 @@ The messages should follow these rules:
 
 
 def build_prompt(prompt, prospect):
-    return master.format(
+    return v1.format(
         full_name=prospect.full_name,
         headline=prospect.headline,
         summary=prospect.summary,
         rules=prompt.text
+    )
+
+
+v3 = """\n
+{full_name}'s LinkedIn headline is: {headline}.
+Their summary is: {summary}
+
+I need to send a message to {full_name} on LinkedIn.
+The message should:
+* Have no line breaks
+* Start 'Hi [first name]', and end 'Kind regards'
+* Have a {style} style 
+
+{sections}
+
+Here are 3 possible messages (numbered):"""
+
+
+def build_prompt_v3(template, prospect):
+    return v3.format(
+        full_name=prospect.full_name,
+        headline=prospect.headline,
+        summary=prospect.summary or "",
+        style=template.parse_style(),
+        sections=template.parse_sections(),
     )

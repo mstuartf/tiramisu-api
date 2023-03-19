@@ -15,4 +15,5 @@ urlpatterns = [
     path("prompts/", include("apps.prompts.urls")),
     path("prospects/", include("apps.prospects.urls")),
     path("messages/", include("apps.messages.urls")),
+    path("templates/", include("apps.templates.urls")),
 ]
