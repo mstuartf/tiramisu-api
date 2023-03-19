@@ -22,7 +22,7 @@ class Template(RootModel):
     meta = models.CharField(max_length=255, null=True, blank=True)
 
     def parse_style(self):
-        if self.style.description == "custom":
+        if self.style.description.lower() == "custom":
             return self.meta
         if self.meta is not None:
             return "{} ({})".format(self.style.description, self.meta)
@@ -51,7 +51,7 @@ class TemplateSection(RootModel):
     template = models.ForeignKey(Template, on_delete=models.CASCADE, related_name="sections")
 
     def parse(self):
-        if self.type.description == "custom":
+        if self.type.description.lower() == "custom":
             return self.meta
         if self.meta is not None:
             return "{} ({})".format(self.type.description, self.meta)

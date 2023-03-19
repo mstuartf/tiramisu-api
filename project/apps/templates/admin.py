@@ -39,4 +39,5 @@ class TemplateSectionTypeAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "description",
+        "meta_placeholder",
     )

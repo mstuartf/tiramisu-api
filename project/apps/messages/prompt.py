@@ -27,7 +27,7 @@ v3 = """\n
 {full_name}'s LinkedIn headline is: {headline}.
 Their summary is: {summary}
 
-I need to send a message to {full_name} on LinkedIn.
+I need to send a sales message to {full_name} on LinkedIn.
 The message should:
 * Have no line breaks
 * Start 'Hi [first name]', and end 'Kind regards'
