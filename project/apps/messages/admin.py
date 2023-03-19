@@ -9,7 +9,6 @@ class MessageSetAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "prospect__slug",
-        "prompt__name",
         "user__email",
         "user__company__name",
         "nb_messages",
@@ -22,9 +21,6 @@ class MessageSetAdmin(admin.ModelAdmin):
 
     def prospect__slug(self, obj):
         return obj.prospect.slug
-
-    def prompt__name(self, obj):
-        return obj.prompt.name
 
     def user__email(self, obj):
         return obj.user.email
