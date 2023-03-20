@@ -28,6 +28,7 @@ class ReadMessageSetSerializer(serializers.ModelSerializer):
             "prospect_id",
             "prompt_id",
             "messages",
+            "processed",
         )
 
 
@@ -38,6 +39,17 @@ class WriteMessageSerializer(serializers.ModelSerializer):
         fields = (
             "parsed",
             "copied"
+        )
+
+
+class BaseMessageSetSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = MessageSet
+        fields = (
+            "user",
+            "prospect",
+            "template",
         )
 
 
@@ -52,4 +64,5 @@ class WriteMessageSetSerializer(WritableNestedModelSerializer):
             "prompt",
             "raw",
             "messages",
+            "processed",
         )
