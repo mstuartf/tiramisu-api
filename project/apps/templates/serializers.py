@@ -16,7 +16,7 @@ class ReadTemplateSectionSerializer(serializers.ModelSerializer):
 
 
 class ReadTemplateSerializer(serializers.ModelSerializer):
-    custom = serializers.SerializerMethodField()
+    shared = serializers.SerializerMethodField()
     sections = ReadTemplateSectionSerializer(many=True)
 
     class Meta:
@@ -25,13 +25,13 @@ class ReadTemplateSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "style",
-            "custom",
+            "shared",
             "sections",
             "meta",
         )
 
-    def get_custom(self, obj):
-        return obj.user is not None
+    def get_shared(self, obj):
+        return obj.user is None
 
 
 class WriteTemplateSectionSerializer(serializers.ModelSerializer):
@@ -49,7 +49,7 @@ class WriteTemplateSerializer(WritableNestedModelSerializer):
 
     class Meta:
         model = Template
-        fields = ("name", "style", "meta", "sections")
+        fields = ("name", "style", "meta", "sections", "user")
 
 
 class ReadTemplateStyleSerializer(serializers.ModelSerializer):
