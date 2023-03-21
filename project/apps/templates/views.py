@@ -27,7 +27,11 @@ class TemplateView(
     serializer_class = ReadTemplateSerializer
 
     def get_queryset(self):
-        return Template.objects.filter(Q(user=None) | Q(user=self.request.user))
+        return Template.objects.filter(
+            Q(user=self.request.user) |  # own
+            Q(user=None, is_shared=True) |  # globally shared
+            Q(user__company=self.request.user.company, is_shared=True)  # shared within company
+        )
 
     def create(self, request, *args, **kwargs):
         data = {
@@ -50,7 +54,7 @@ class TemplateView(
             "user": request.user.id,
         }
         instance = self.get_object()
-        serializer = WriteTemplateSerializer(instance, data=request.data)
+        serializer = WriteTemplateSerializer(instance, data=data)
 
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)

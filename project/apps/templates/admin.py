@@ -11,6 +11,7 @@ class TemplateAdmin(admin.ModelAdmin):
         "user__email",
         "name",
         "meta",
+        "is_shared",
     )
 
     def user__email(self, obj):

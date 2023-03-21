@@ -1,6 +1,7 @@
 from django.db import models
 from api.models import RootModel
 from ..accounts.models import CustomUser
+from ..companies.models import Company
 
 
 class TemplateStyle(RootModel):
@@ -20,6 +21,7 @@ class Template(RootModel):
     style = models.ForeignKey(TemplateStyle, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     meta = models.CharField(max_length=255, null=True, blank=True)
+    is_shared = models.BooleanField(default=False)
 
     def parse_style(self):
         if self.style.description.lower() == "custom":
