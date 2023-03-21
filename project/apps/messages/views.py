@@ -136,9 +136,13 @@ class MessageSetView(
             chat_messages = build_chat_messages(template, prospect)
             args = {"template": template.id}
             raw = draft_chat_messages(chat_messages)
-            raw_messages = raw["choices"][0]["message"]["content"]
-            logger.info(raw_messages)
-            messages = [{"parsed": m["message"]} for m in json.loads(raw_messages)]
+            raw_messages = raw["choices"][0]["message"]["content"].replace("`", "")
+
+            start = raw_messages.find('[')
+            end = raw_messages.find(']')
+            logger.info(raw_messages[start:end + 1])
+
+            messages = [{"parsed": m["message"]} for m in json.loads(raw_messages[start:end + 1])]
 
         data = {
             "user": request.user.id,
