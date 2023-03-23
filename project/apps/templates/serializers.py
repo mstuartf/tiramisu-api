@@ -16,7 +16,6 @@ class ReadTemplateSectionSerializer(serializers.ModelSerializer):
 
 
 class ReadTemplateSerializer(serializers.ModelSerializer):
-    shared = serializers.SerializerMethodField()
     sections = ReadTemplateSectionSerializer(many=True)
 
     class Meta:
@@ -28,19 +27,7 @@ class ReadTemplateSerializer(serializers.ModelSerializer):
             "sections",
             "meta",
             "user",
-            "shared",
         )
-
-    # todo: remove
-    def get_shared(self, obj):
-        owner = obj.user
-        if owner is None:
-            # globally shared
-            return True
-        if self.context['request'].user != owner:
-            # owner is someone else is user's company
-            return True
-        return False
 
 
 class WriteTemplateSectionSerializer(serializers.ModelSerializer):
