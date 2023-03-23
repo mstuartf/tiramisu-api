@@ -45,6 +45,10 @@ def build_chat_messages(template, prospect):
             "content": "You only speak JSON. Do not print normal text. Print an array only. For each message, add an object to the array with the key 'message'."
         },
         {
+            "role": "system",
+            "content": "Do not use any placeholder variables."
+        },
+        {
             "role": "user",
             "content": v3.format(
                 full_name=prospect.full_name,

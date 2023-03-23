@@ -13,6 +13,7 @@ class MessageSet(RootModel):
     template = models.ForeignKey(Template, on_delete=models.CASCADE, null=True, blank=True)
     prospect = models.ForeignKey(Prospect, on_delete=models.CASCADE)
     processed = models.BooleanField(default=False)
+    error = models.TextField(null=True, blank=True)
 
 
 class Message(RootModel):

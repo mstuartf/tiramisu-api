@@ -44,6 +44,13 @@ class MessageSetView(
     def get_queryset(self):
         return MessageSet.objects.filter(user=self.request.user)
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.error is not None:
+            return Response({}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
     def create(self, request, *args, **kwargs):
 
         template_id = request.data["template_id"]
@@ -70,6 +77,7 @@ class MessageSetView(
 
         obj = serializer.save()
 
+        logger.info('deferring msg task')
         generate_message_task.apply_async(args=[str(obj.id)])
 
         read_serializer = ReadMessageSetSerializer(obj)
