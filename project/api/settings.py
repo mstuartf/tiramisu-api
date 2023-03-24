@@ -99,7 +99,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60*24),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    'ROTATE_REFRESH_TOKENS': True
 }
 
 AUTH_USER_MODEL = "accounts.CustomUser"
