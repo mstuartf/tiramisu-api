@@ -1,29 +1,4 @@
-v1 = """\n
-"{full_name}'s LinkedIn headline is:
-{headline}.
-   
-Their summary is:
-{summary}
-
-Write 5 messages (numbered 1-5) that I could send to start a conversation with {full_name} that make a reference to \
-information on their profile.
-
-The messages should follow these rules:
-* No line breaks
-{rules}\
-"""
-
-
-def build_prompt(prompt, prospect):
-    return v1.format(
-        full_name=prospect.full_name,
-        headline=prospect.headline,
-        summary=prospect.summary,
-        rules=prompt.text
-    )
-
-
-v3 = """\n
+skeleton = """\n
 Draft 3 messages to {full_name}
 Their LinkedIn headline is: {headline}
 Their summary is: {summary}
@@ -33,6 +8,7 @@ The messages should:
 * Have a {style} style 
 
 {sections}"""
+
 
 def build_chat_messages(template, prospect):
     return [
@@ -50,7 +26,7 @@ def build_chat_messages(template, prospect):
         },
         {
             "role": "user",
-            "content": v3.format(
+            "content": skeleton.format(
                 full_name=prospect.full_name,
                 headline=prospect.headline,
                 summary=prospect.summary or "",

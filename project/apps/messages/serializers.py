@@ -26,7 +26,6 @@ class ReadMessageSetSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "prospect_id",
-            "prompt_id",
             "messages",
             "processed",
         )
@@ -61,7 +60,7 @@ class WriteMessageSetSerializer(WritableNestedModelSerializer):
         fields = (
             "user",
             "prospect",
-            "prompt",
+            "template",
             "raw",
             "messages",
             "processed",

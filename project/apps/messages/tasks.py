@@ -1,11 +1,10 @@
 import json
 import logging
 from celery import shared_task
-from openai.error import RateLimitError, ServiceUnavailableError
 
 from .chat import draft_chat_messages
 from .models import MessageSet
-from .prompt import build_chat_messages
+from .messages import build_chat_messages
 from .serializers import WriteMessageSetSerializer
 
 logger = logging.getLogger(__name__)

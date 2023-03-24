@@ -12,9 +12,7 @@ urlpatterns = [
     path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path("accounts/", include("apps.accounts.urls")),
-    path("prompts/", include("apps.prompts.urls")),
     path("prospects/", include("apps.prospects.urls")),
-    path("messages/", include("apps.messages.urls")),
-    path("v2/messages/", include("apps.messages.urls_2")),
+    path("v2/messages/", include("apps.messages.urls")),
     path("templates/", include("apps.templates.urls")),
 ]
