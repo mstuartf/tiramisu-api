@@ -30,7 +30,7 @@ class TemplateView(
         return Template.objects.filter(
             Q(user=self.request.user) |  # own
             Q(user=None, is_shared=True) |  # globally shared
-            Q(user__company=self.request.user.company, is_shared=True)  # shared within company
+            Q(user__company=self.request.user.company)  # shared within company
         )
 
     def create(self, request, *args, **kwargs):
