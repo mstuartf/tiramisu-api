@@ -87,6 +87,7 @@ INSTALLED_APPS = [
     "apps.prospects",
     "apps.messages",
     "apps.templates",
+    "apps.salesforce",
 ]
 
 REST_FRAMEWORK = {

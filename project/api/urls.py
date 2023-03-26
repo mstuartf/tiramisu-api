@@ -15,4 +15,5 @@ urlpatterns = [
     path("prospects/", include("apps.prospects.urls")),
     path("v2/messages/", include("apps.messages.urls")),
     path("templates/", include("apps.templates.urls")),
+    path("salesforce/", include("apps.salesforce.urls")),
 ]
