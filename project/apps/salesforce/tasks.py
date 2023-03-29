@@ -15,14 +15,21 @@ def create_salesforce_task(pk):
     try:
         logger.info("looking for {}'s credentials".format(msg.user.company.name))
         credentials = Credentials.objects.get(company=msg.user.company)
-        contact_id = lookup_contact_id(credentials, 'LinkedIn_Url', msg.profile_slug)
+
+        if credentials.linkedin_field_name is None:
+            raise Exception('linked in field name has not been configured')
+
+        contact_id = lookup_contact_id(credentials, msg.profile_slug)
         res = create_linkedin_msg_task(credentials, contact_id, msg.content)
-        logger.info(res)
+
         if not res['success']:
+            logger.info(res['errors'])
             raise Exception("|".join(res['errors']))
+
         Task.objects.create(msg=msg, task_id=res["id"])
         msg.processed = True
         msg.save()
+
     except Exception as e:
         logger.info(e)
         msg.processed = True

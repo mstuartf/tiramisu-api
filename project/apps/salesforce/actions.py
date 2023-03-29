@@ -8,26 +8,16 @@ from .auth import salesforce_req
 logger = logging.getLogger(__name__)
 
 
-# {
-#     "totalSize": 1,
-#     "done": true,
-#     "records": [
-#         {
-#             "attributes": {
-#                 "type": "Contact",
-#                 "url": "/services/data/v57.0/sobjects/Contact/0038d00000UbgxQAAR"
-#             },
-#             "Id": "0038d00000UbgxQAAR",
-#             "Name": "Andy Young",
-#             "LinkedIn_Url__c": "https://www.linkedin.com/in/mstuartf/"
-#         }
-#     ]
-# }
-def lookup_contact_id(credentials, linkedin_field_name, slug):
+def lookup_contact_id(credentials, slug):
+    field_name = '{}{}'.format(
+        credentials.linkedin_field_name,
+        "__c" if credentials.linkedin_field_is_custom else "",
+    )
+
     res = salesforce_req(credentials, 'get', 'query', params={
-        'q': r"SELECT Id, {}__c FROM Contact WHERE {}__c LIKE '%{}%'".format(
-            linkedin_field_name,
-            linkedin_field_name,
+        'q': r"SELECT Id, {} FROM Contact WHERE {} LIKE '%{}%'".format(
+            field_name,
+            field_name,
             slug,
         )
     })
@@ -48,4 +38,4 @@ def create_linkedin_msg_task(credentials, contact_id, description):
         "Description": description,
     })
     logger.info(res)
-    return HttpResponse('ok', content_type="application/json")
+    return res

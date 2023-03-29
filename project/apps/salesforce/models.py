@@ -15,6 +15,10 @@ class Credentials(RootModel):
     token_type = models.TextField()
     issued_at = models.TextField()
 
+    # config fields
+    linkedin_field_name = models.CharField(max_length=255, null=True, blank=True)
+    linkedin_field_is_custom = models.BooleanField(default=True)
+
 
 class Task(RootModel):
     msg = models.ForeignKey(LinkedInMessage, on_delete=models.CASCADE)
