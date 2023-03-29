@@ -40,6 +40,7 @@ def join_account_view(request, company_id=None):
 class UserView(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
     GenericViewSet,
 ):
 

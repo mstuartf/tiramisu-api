@@ -9,12 +9,14 @@ class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
-    list_display = ["id", "email", "company__name", "admin"]
+    list_display = ["id", "email", "company__name", "admin", "msg_tracking_enabled"]
     ordering = ('email',)
 
     fieldsets = (
         (None, {"fields": ("email", "password", "company")}),
         ("Permissions", {"fields": ("is_staff", "is_active",)}),
+        ("Flags", {"fields": ("msg_tracking_enabled",)}),
+        ("Config", {"fields": ("msg_tracking_activated",)}),
     )
 
     def company__name(self, obj):

@@ -52,3 +52,9 @@ class CustomUser(AbstractUser):
 
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
     admin = models.BooleanField(default=False)
+
+    # feature flags
+    msg_tracking_enabled = models.BooleanField(default=False)
+
+    # account config
+    msg_tracking_activated = models.BooleanField(default=False)
