@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
-from .models import MessageSet, Message
+from .models import MessageSet, Message, LinkedInMessage
 
 
 class ReadMessageSerializer(serializers.ModelSerializer):
@@ -64,4 +64,29 @@ class WriteMessageSetSerializer(WritableNestedModelSerializer):
             "raw",
             "messages",
             "processed",
+        )
+
+
+class WriteLinkedInMessageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = LinkedInMessage
+        fields = (
+            "profile_slug",
+            "profile_name",
+            "content",
+            "user",
+        )
+
+
+class ReadLinkedInMessageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = LinkedInMessage
+        fields = (
+            "id",
+            "profile_slug",
+            "profile_name",
+            "content",
+            "user",
         )

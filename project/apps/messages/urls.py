@@ -5,6 +5,7 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'sets', views.MessageSetView, basename='message_sets')
+router.register(r'linkedin', views.LinkedInMessageView, basename='message_sets')
 
 urlpatterns = [
     path(r'', include(router.urls)),

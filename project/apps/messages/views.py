@@ -4,12 +4,12 @@ from rest_framework import mixins, status
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from .models import Message, MessageSet
+from .models import Message, MessageSet, LinkedInMessage
 from .tasks import generate_message_task
 from .serializers import (
     BaseMessageSetSerializer,
     ReadMessageSetSerializer,
-    WriteMessageSerializer,
+    WriteMessageSerializer, WriteLinkedInMessageSerializer, ReadLinkedInMessageSerializer,
 )
 from ..prospects.models import Prospect
 from ..prospects.serializers import WriteProspectSerializer
@@ -95,3 +95,30 @@ class MessageView(
 
     def get_queryset(self):
         return Message.objects.filter(set__user=self.request.user)
+
+
+class LinkedInMessageView(
+    mixins.CreateModelMixin,
+    GenericViewSet,
+):
+    serializer_class = WriteLinkedInMessageSerializer
+
+    def get_queryset(self):
+        return LinkedInMessage.objects.filter(set__user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        data = {
+            **request.data,
+            "user": request.user.id,
+        }
+        serializer = WriteLinkedInMessageSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        obj = serializer.save()
+        read_serializer = ReadLinkedInMessageSerializer(obj)
+        headers = self.get_success_headers(read_serializer.data)
+        return Response(
+            read_serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
+        # return Response(
+        #     {"detail": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST, headers=headers
+        # )

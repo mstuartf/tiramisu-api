@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import MessageSet, Message
+from .models import MessageSet, Message, LinkedInMessage
 
 
 @admin.register(MessageSet)
@@ -52,3 +52,17 @@ class MessageAdmin(admin.ModelAdmin):
 
     def set__id(self, obj):
         return obj.set.id
+
+
+@admin.register(LinkedInMessage)
+class LinkedInMessageAdmin(admin.ModelAdmin):
+    model = LinkedInMessage
+
+    list_display = (
+        "id",
+        "profile_slug",
+        "profile_name",
+        "user__email",
+    )
+    def user__email(self, obj):
+        return obj.user.email

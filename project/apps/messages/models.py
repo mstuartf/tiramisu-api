@@ -18,3 +18,10 @@ class Message(RootModel):
     set = models.ForeignKey(MessageSet, on_delete=models.CASCADE, related_name="messages")
     parsed = models.TextField()
     copied = models.BooleanField(default=False)
+
+
+class LinkedInMessage(RootModel):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    profile_slug = models.SlugField()
+    content = models.TextField()
+    profile_name = models.CharField(max_length=255)
