@@ -10,7 +10,7 @@ from ..companies.models import Company
 
 logger = logging.getLogger(__name__)
 
-# https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=$CLIENT_ID&redirect_uri=$ORIGIN/salesforce/oauth/callback&state=$COMPANY_ID
+# https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=$CLIENT_ID&redirect_uri=$SALESFORCE_CALLBACK_URL&state=$COMPANY_ID
 
 @api_view()
 @permission_classes((AllowAny, ))

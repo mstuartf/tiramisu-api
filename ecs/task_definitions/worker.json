@@ -41,6 +41,14 @@
                 {
                     "name": "CORS_ALLOWED_ORIGINS",
                     "value": "chrome-extension://kafammaocphfnhjdabfefljkkkompida,chrome-extension://ommeebbocdeejnhamoliahecdlcbibma"
+                },
+                {
+                    "name": "SALESFORCE_CONSUMER_KEY",
+                    "value": "3MVG9DREgiBqN9Wkw5rCCuprOH4CNQc7xTCWA_5GEP5NE3ndthkvZIS.yT4KNLG534DyflKVNtN1HuktVRWWm"
+                },
+                {
+                    "name": "SALESFORCE_CALLBACK_URL",
+                    "value": "https://api.seasmoke.io/salesforce/oauth/callback"
                 }
             ],
             "essential": true,
@@ -85,6 +93,10 @@
                 {
                     "name": "PROXYCURL_TOKEN",
                     "valueFrom": "arn:aws:secretsmanager:eu-west-2:112991276079:secret:PROXYCURL_TOKEN-vtdTJB"
+                },
+                {
+                    "name": "SALESFORCE_CONSUMER_SECRET",
+                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:112991276079:secret:SALESFORCE_CONSUMER_SECRET-JRmC7p"
                 }
             ],
             "volumesFrom": []
