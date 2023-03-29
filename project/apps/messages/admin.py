@@ -57,12 +57,16 @@ class MessageAdmin(admin.ModelAdmin):
 @admin.register(LinkedInMessage)
 class LinkedInMessageAdmin(admin.ModelAdmin):
     model = LinkedInMessage
+    ordering = ('-created', )
 
     list_display = (
         "id",
+        "created",
         "profile_slug",
         "profile_name",
         "user__email",
+        "processed",
+        "error",
     )
     def user__email(self, obj):
         return obj.user.email

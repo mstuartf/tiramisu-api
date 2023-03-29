@@ -25,3 +25,5 @@ class LinkedInMessage(RootModel):
     profile_slug = models.SlugField()
     content = models.TextField()
     profile_name = models.CharField(max_length=255)
+    processed = models.BooleanField(default=False)
+    error = models.TextField(null=True, blank=True)

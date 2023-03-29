@@ -1,6 +1,7 @@
 from django.db import models
 from api.models import RootModel
 from ..companies.models import Company
+from..messages.models import LinkedInMessage
 
 
 class Credentials(RootModel):
@@ -13,3 +14,8 @@ class Credentials(RootModel):
     instance_url = models.TextField()
     token_type = models.TextField()
     issued_at = models.TextField()
+
+
+class Task(RootModel):
+    msg = models.ForeignKey(LinkedInMessage, on_delete=models.CASCADE)
+    task_id = models.CharField(max_length=255)

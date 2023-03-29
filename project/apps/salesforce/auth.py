@@ -66,7 +66,7 @@ def salesforce_req(credentials, method, path, auto_refresh=True, **kwargs):
             credentials.access_token = tokens['access_token']
             credentials.issued_at = tokens['issued_at']
             credentials.save()
-            return salesforce_req(credentials, method, auto_refresh=False, **kwargs)
+            return salesforce_req(credentials, method, path, auto_refresh=False, **kwargs)
         logger.info(res.content)
         raise
 

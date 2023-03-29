@@ -6,6 +6,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from .models import Message, MessageSet, LinkedInMessage
 from .tasks import generate_message_task
+from ..salesforce.tasks import create_salesforce_task
 from .serializers import (
     BaseMessageSetSerializer,
     ReadMessageSetSerializer,
@@ -114,11 +115,9 @@ class LinkedInMessageView(
         serializer = WriteLinkedInMessageSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         obj = serializer.save()
+        create_salesforce_task.apply_async(args=[str(obj.id)])
         read_serializer = ReadLinkedInMessageSerializer(obj)
         headers = self.get_success_headers(read_serializer.data)
         return Response(
             read_serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )
-        # return Response(
-        #     {"detail": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST, headers=headers
-        # )

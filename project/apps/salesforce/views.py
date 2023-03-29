@@ -1,11 +1,9 @@
-import json
 import logging
 
 from django.http import HttpResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 
-from .actions import lookup_contact_id, create_linkedin_msg_task
 from .auth import get_tokens
 from .models import Credentials
 from ..companies.models import Company
@@ -31,13 +29,3 @@ def oauth_callback(request):
         Credentials.objects.create(company=company, **tokens)
 
     return HttpResponse('ok')
-
-
-@api_view()
-@permission_classes((AllowAny, ))
-def test(request):
-    credentials = Credentials.objects.first()
-    contact_id = lookup_contact_id(credentials, 'LinkedIn_Url', 'mstuartf')
-    task = create_linkedin_msg_task(credentials, contact_id, "This was added by the API!")
-    logger.info(task)
-    return HttpResponse(json.dumps(task, indent=4), content_type="application/json")
