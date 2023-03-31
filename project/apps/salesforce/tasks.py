@@ -1,7 +1,7 @@
 import logging
 from celery import shared_task
 
-from .actions import lookup_contact_id, create_linkedin_msg_task
+from .actions import lookup_contact_id, create_linkedin_msg_task, lookup_user_id
 from .models import Credentials, Task
 from ..messages.models import LinkedInMessage
 
@@ -20,7 +20,8 @@ def create_salesforce_task(pk):
             raise Exception('linked in field name has not been configured')
 
         contact_id = lookup_contact_id(credentials, msg.profile_slug)
-        res = create_linkedin_msg_task(credentials, contact_id, msg.content)
+        user_id = lookup_user_id(credentials, msg.user.email)
+        res = create_linkedin_msg_task(credentials, contact_id, user_id, msg.content)
 
         if not res['success']:
             logger.info(res['errors'])

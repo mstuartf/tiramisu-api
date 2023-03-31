@@ -16,8 +16,9 @@ class Credentials(RootModel):
     issued_at = models.TextField()
 
     # config fields
+
+    # SETUP > OBJECT MANAGER > Contact > Fields & Relationships
     linkedin_field_name = models.CharField(max_length=255, null=True, blank=True)
-    linkedin_field_is_custom = models.BooleanField(default=True)
 
 
 class Task(RootModel):

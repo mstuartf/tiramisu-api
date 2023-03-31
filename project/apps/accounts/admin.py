@@ -16,7 +16,7 @@ class CustomUserAdmin(UserAdmin):
         (None, {"fields": ("email", "password", "company")}),
         ("Permissions", {"fields": ("is_staff", "is_active",)}),
         ("Flags", {"fields": ("msg_tracking_enabled",)}),
-        ("Config", {"fields": ("msg_tracking_activated",)}),
+        ("Config", {"fields": ("msg_tracking_activated", "admin",)}),
     )
 
     def company__name(self, obj):
