@@ -1,7 +1,5 @@
 # ABOUT
 
-This is the API for the [Designer App](https://app.tactillo.com).
-
 # STRUCTURE
 
 * `project` contains all of the application code, Dockerfile to build the image and the different container commands for
