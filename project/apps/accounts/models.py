@@ -58,3 +58,4 @@ class CustomUser(AbstractUser):
 
     # account config
     msg_tracking_activated = models.BooleanField(default=False)
+    openai_model = models.CharField(max_length=255, default="gpt-3.5-turbo")

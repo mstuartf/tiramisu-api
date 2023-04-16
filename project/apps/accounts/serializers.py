@@ -14,4 +14,5 @@ class ReadUserSerializer(serializers.ModelSerializer):
             "company",
             "msg_tracking_enabled",
             "msg_tracking_activated",
+            "openai_model",
         )

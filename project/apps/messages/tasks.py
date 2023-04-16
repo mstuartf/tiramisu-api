@@ -18,7 +18,7 @@ def generate_message_task(pk):
         logger.info("drafting messages")
         chat_messages = build_chat_messages(ms.template, ms.prospect)
         logger.info("calling openai api")
-        raw = draft_chat_messages(chat_messages)
+        raw = draft_chat_messages(chat_messages, model=ms.user.openai_model)
         logger.info(raw)
         raw_messages = raw["choices"][0]["message"]["content"].replace("`", "")
 
