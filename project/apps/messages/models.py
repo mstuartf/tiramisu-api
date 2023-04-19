@@ -27,3 +27,10 @@ class LinkedInMessage(RootModel):
     profile_name = models.CharField(max_length=255)
     processed = models.BooleanField(default=False)
     error = models.TextField(null=True, blank=True)
+
+
+# class LinkedInLike(RootModel):
+#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+#     profile_slug = models.SlugField()
+#     post_url = models.URLField()
+#     post_title = models.CharField(max_length=255)

@@ -12,7 +12,9 @@ class ReadUserSerializer(serializers.ModelSerializer):
             "email",
             "admin",
             "company",
-            "msg_tracking_enabled",
+            "linkedin_tracking_enabled",
             "msg_tracking_activated",
+            "like_tracking_activated",
+            "comment_tracking_activated",
             "openai_model",
         )

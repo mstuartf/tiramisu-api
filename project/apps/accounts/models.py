@@ -54,8 +54,10 @@ class CustomUser(AbstractUser):
     admin = models.BooleanField(default=False)
 
     # feature flags
-    msg_tracking_enabled = models.BooleanField(default=False)
+    linkedin_tracking_enabled = models.BooleanField(default=False)
 
     # account config
     msg_tracking_activated = models.BooleanField(default=False)
+    like_tracking_activated = models.BooleanField(default=False)
+    comment_tracking_activated = models.BooleanField(default=False)
     openai_model = models.CharField(max_length=255, default="gpt-3.5-turbo")
