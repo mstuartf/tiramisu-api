@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import MessageSet, Message, LinkedInMessage
+from .models import MessageSet, Message, LinkedInMessage, LinkedInLike, LinkedInComment
 
 
 @admin.register(MessageSet)
@@ -67,6 +67,38 @@ class LinkedInMessageAdmin(admin.ModelAdmin):
         "user__email",
         "processed",
         "error",
+    )
+    def user__email(self, obj):
+        return obj.user.email
+
+
+@admin.register(LinkedInLike)
+class LinkedInLikeAdmin(admin.ModelAdmin):
+    model = LinkedInLike
+    ordering = ('-created', )
+
+    list_display = (
+        "id",
+        "created",
+        "profile_slug",
+        "profile_name",
+        "user__email",
+    )
+    def user__email(self, obj):
+        return obj.user.email
+
+
+@admin.register(LinkedInComment)
+class LinkedInCommentAdmin(admin.ModelAdmin):
+    model = LinkedInComment
+    ordering = ('-created', )
+
+    list_display = (
+        "id",
+        "created",
+        "profile_slug",
+        "profile_name",
+        "user__email",
     )
     def user__email(self, obj):
         return obj.user.email

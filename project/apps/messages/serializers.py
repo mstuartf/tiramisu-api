@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
-from .models import MessageSet, Message, LinkedInMessage
+from .models import MessageSet, Message, LinkedInMessage, LinkedInLike, LinkedInComment
 
 
 class ReadMessageSerializer(serializers.ModelSerializer):
@@ -88,5 +88,55 @@ class ReadLinkedInMessageSerializer(serializers.ModelSerializer):
             "profile_slug",
             "profile_name",
             "content",
+            "user",
+        )
+
+
+class WriteLinkedInLikeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = LinkedInLike
+        fields = (
+            "profile_slug",
+            "profile_name",
+            "post_content",
+            "user",
+        )
+
+
+class ReadLinkedInLikeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = LinkedInLike
+        fields = (
+            "id",
+            "profile_slug",
+            "profile_name",
+            "post_content",
+            "user",
+        )
+
+
+class WriteLinkedInCommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = LinkedInComment
+        fields = (
+            "profile_slug",
+            "profile_name",
+            "post_content",
+            "user",
+        )
+
+
+class ReadLinkedInCommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = LinkedInComment
+        fields = (
+            "id",
+            "profile_slug",
+            "profile_name",
+            "post_content",
             "user",
         )

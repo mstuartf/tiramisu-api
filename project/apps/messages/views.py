@@ -4,13 +4,16 @@ from rest_framework import mixins, status
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from .models import Message, MessageSet, LinkedInMessage
+from .models import Message, MessageSet, LinkedInMessage, LinkedInLike, LinkedInComment
 from .tasks import generate_message_task
 from ..salesforce.tasks import create_salesforce_task
 from .serializers import (
     BaseMessageSetSerializer,
     ReadMessageSetSerializer,
-    WriteMessageSerializer, WriteLinkedInMessageSerializer, ReadLinkedInMessageSerializer,
+    WriteMessageSerializer,
+    WriteLinkedInMessageSerializer, ReadLinkedInMessageSerializer,
+    WriteLinkedInLikeSerializer, ReadLinkedInLikeSerializer,
+    WriteLinkedInCommentSerializer, ReadLinkedInCommentSerializer,
 )
 from ..prospects.models import Prospect
 from ..prospects.serializers import WriteProspectSerializer
@@ -117,6 +120,56 @@ class LinkedInMessageView(
         obj = serializer.save()
         create_salesforce_task.apply_async(args=[str(obj.id)])
         read_serializer = ReadLinkedInMessageSerializer(obj)
+        headers = self.get_success_headers(read_serializer.data)
+        return Response(
+            read_serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
+
+
+class LinkedInLikeView(
+    mixins.CreateModelMixin,
+    GenericViewSet,
+):
+    serializer_class = WriteLinkedInLikeSerializer
+
+    def get_queryset(self):
+        return LinkedInLike.objects.filter(set__user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        data = {
+            **request.data,
+            "user": request.user.id,
+        }
+        serializer = WriteLinkedInLikeSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        obj = serializer.save()
+        # create_salesforce_task.apply_async(args=[str(obj.id)])
+        read_serializer = ReadLinkedInLikeSerializer(obj)
+        headers = self.get_success_headers(read_serializer.data)
+        return Response(
+            read_serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
+
+
+class LinkedInCommentView(
+    mixins.CreateModelMixin,
+    GenericViewSet,
+):
+    serializer_class = WriteLinkedInCommentSerializer
+
+    def get_queryset(self):
+        return LinkedInComment.objects.filter(set__user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        data = {
+            **request.data,
+            "user": request.user.id,
+        }
+        serializer = WriteLinkedInCommentSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        obj = serializer.save()
+        # create_salesforce_task.apply_async(args=[str(obj.id)])
+        read_serializer = ReadLinkedInCommentSerializer(obj)
         headers = self.get_success_headers(read_serializer.data)
         return Response(
             read_serializer.data, status=status.HTTP_201_CREATED, headers=headers
