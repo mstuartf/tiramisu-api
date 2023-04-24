@@ -37,12 +37,12 @@ def lookup_user_id(credentials, email_address):
     return res['records'][0]['Id']
 
 
-def create_linkedin_msg_task(credentials, contact_id, user_id, description):
+def create_salesforce_task(subject, credentials, contact_id, user_id, description):
     res = salesforce_req(credentials, 'post', 'sobjects/Task', json={
         "WhoId": contact_id,
         "OwnerId": user_id,
         # "CreatedById": user_id, <-- INVALID_FIELD_FOR_INSERT_UPDATE
-        "Subject": "LinkedIn message",
+        "Subject": subject,
         "Status": "Completed",
         "Description": description,
     })

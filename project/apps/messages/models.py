@@ -34,6 +34,8 @@ class LinkedInLike(RootModel):
     profile_slug = models.SlugField()
     profile_name = models.CharField(max_length=255)
     post_content = models.CharField(max_length=255)
+    processed = models.BooleanField(default=False)
+    error = models.TextField(null=True, blank=True)
 
 
 class LinkedInComment(RootModel):
@@ -41,3 +43,5 @@ class LinkedInComment(RootModel):
     profile_slug = models.SlugField()
     profile_name = models.CharField(max_length=255)
     post_content = models.CharField(max_length=255)
+    processed = models.BooleanField(default=False)
+    error = models.TextField(null=True, blank=True)

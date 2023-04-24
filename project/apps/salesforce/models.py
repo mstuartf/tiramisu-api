@@ -1,7 +1,7 @@
 from django.db import models
 from api.models import RootModel
 from ..companies.models import Company
-from..messages.models import LinkedInMessage
+from..messages.models import LinkedInMessage, LinkedInLike, LinkedInComment
 
 
 class Credentials(RootModel):
@@ -22,5 +22,7 @@ class Credentials(RootModel):
 
 
 class Task(RootModel):
-    msg = models.ForeignKey(LinkedInMessage, on_delete=models.CASCADE)
+    msg = models.ForeignKey(LinkedInMessage, on_delete=models.CASCADE, null=True)
+    like = models.ForeignKey(LinkedInLike, on_delete=models.CASCADE, null=True)
+    comment = models.ForeignKey(LinkedInComment, on_delete=models.CASCADE, null=True)
     task_id = models.CharField(max_length=255)
