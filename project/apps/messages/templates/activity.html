@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Activity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-4">
+<div>
+    <table class="w-full text-sm text-left text-gray-500">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+        <tr>
+            <th class="px-6 py-3">
+                {{ company.name }} users
+            </th>
+            <th class="px-6 py-3">
+                # messages
+            </th>
+            <th class="px-6 py-3">
+                # likes
+            </th>
+            <th class="px-6 py-3">
+                # comments
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr class="bg-white border-b">
+                <td class="px-6 py-4">
+                    {{ user.email }}
+                </td>
+                <td class="px-6 py-4">
+                    {{ user.nb_messages }}
+                </td>
+                <td class="px-6 py-4">
+                    {{ user.nb_likes }}
+                </td>
+                <td class="px-6 py-4">
+                    {{ user.nb_comments }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

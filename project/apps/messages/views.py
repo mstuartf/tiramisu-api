@@ -1,12 +1,14 @@
 import logging
 
+from django.db.models import Count
+from django.shortcuts import render
 from rest_framework import mixins, status
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from .models import Message, MessageSet, LinkedInMessage, LinkedInLike, LinkedInComment
-from .tasks import generate_message_task
-from ..salesforce.tasks import create_salesforce_msg_task, create_salesforce_like_task, create_salesforce_comment_task
 from .serializers import (
     BaseMessageSetSerializer,
     ReadMessageSetSerializer,
@@ -15,8 +17,11 @@ from .serializers import (
     WriteLinkedInLikeSerializer, ReadLinkedInLikeSerializer,
     WriteLinkedInCommentSerializer, ReadLinkedInCommentSerializer,
 )
+from .tasks import generate_message_task
+from ..companies.models import Company
 from ..prospects.models import Prospect
 from ..prospects.serializers import WriteProspectSerializer
+from ..salesforce.tasks import create_salesforce_msg_task, create_salesforce_like_task, create_salesforce_comment_task
 from ..templates.models import Template
 
 logger = logging.getLogger(__name__)
@@ -174,3 +179,14 @@ class LinkedInCommentView(
         return Response(
             read_serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )
+
+
+@permission_classes((AllowAny, ))
+def activity_view(request, company_id=None):
+    company = Company.objects.get(pk=company_id)
+    users = company.customuser_set.all().annotate(
+        nb_messages=Count('linkedinmessage', distinct=True),
+        nb_likes=Count('linkedinlike', distinct=True),
+        nb_comments=Count('linkedincomment', distinct=True),
+    )
+    return render(request, 'activity.html', {'users': users, 'company': company})

@@ -10,6 +10,7 @@ router.register(r'linkedin/like', views.LinkedInLikeView, basename='linkedin_lik
 router.register(r'linkedin/comment', views.LinkedInCommentView, basename='linkedin_comments')
 
 urlpatterns = [
+    path('activity/<company_id>', views.activity_view, name="activity_view"),
     path(r'', include(router.urls)),
 ]
 
