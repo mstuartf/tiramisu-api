@@ -5,7 +5,7 @@ from ..accounts.models import CustomUser
 
 class Prospect(RootModel):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, allow_unicode=True)
     full_name = models.CharField(max_length=255)
     headline = models.TextField()
     summary = models.TextField(null=True, blank=True)
