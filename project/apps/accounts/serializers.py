@@ -16,5 +16,6 @@ class ReadUserSerializer(serializers.ModelSerializer):
             "msg_tracking_activated",
             "like_tracking_activated",
             "comment_tracking_activated",
+            "auto_save",
             "openai_model",
         )

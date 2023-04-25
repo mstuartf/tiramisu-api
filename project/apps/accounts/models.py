@@ -60,4 +60,5 @@ class CustomUser(AbstractUser):
     msg_tracking_activated = models.BooleanField(default=False)
     like_tracking_activated = models.BooleanField(default=False)
     comment_tracking_activated = models.BooleanField(default=False)
+    auto_save = models.BooleanField(default=False)
     openai_model = models.CharField(max_length=255, default="gpt-3.5-turbo")
