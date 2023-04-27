@@ -61,7 +61,7 @@
                 "retries": 3,
                 "timeout": 5
             },
-            "image": "112991276079.dkr.ecr.eu-west-2.amazonaws.com/tiramisu-api:2.0.17",
+            "image": "112991276079.dkr.ecr.eu-west-2.amazonaws.com/tiramisu-api:2.0.18",
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
